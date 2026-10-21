@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Search, ShoppingBag, Menu, User, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "cn";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -14,6 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { toast } from "sonner";
+import { UserNav } from "@/components/layout/user-nav";
 
 export function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -94,15 +96,7 @@ export function Navbar() {
           </Button>
 
           {/* User Account / Auth */}
-          <Button
-            variant="outline"
-            size="sm"
-            className="hidden sm:flex items-center gap-1.5 h-9"
-            onClick={() => toast.info("Fitur login & register akan aktif di Phase 3 (Supabase Auth)")}
-          >
-            <User className="size-4" />
-            <span>Masuk</span>
-          </Button>
+          <UserNav />
 
           {/* Mobile Navigation Menu via Sheet */}
           <div className="md:hidden">
@@ -149,15 +143,18 @@ export function Navbar() {
                     <Link href="#about" className="px-3 py-2 rounded-md hover:bg-muted transition">
                       Tentang Kami
                     </Link>
+                    <Link href="/account/orders" className="px-3 py-2 rounded-md hover:bg-muted transition">
+                      Pesanan Saya
+                    </Link>
                   </div>
 
                   <div className="border-t pt-4 flex flex-col gap-2">
-                    <Button
-                      className="w-full justify-center"
-                      onClick={() => toast.info("Fitur akun aktif di Phase 3")}
+                    <Link
+                      href="/login"
+                      className={cn(buttonVariants(), "w-full justify-center")}
                     >
                       <User className="size-4 mr-2" /> Masuk / Daftar Akun
-                    </Button>
+                    </Link>
                   </div>
                 </div>
               </SheetContent>
