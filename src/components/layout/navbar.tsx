@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Search, ShoppingBag, Menu, User, Sparkles } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -17,11 +17,20 @@ import {
 } from "@/components/ui/sheet";
 import { toast } from "sonner";
 import { UserNav } from "@/components/layout/user-nav";
+import { useCartStore } from "@/store/use-cart-store";
+import { CartDrawer } from "@/components/cart/cart-drawer";
 
 export function Navbar() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
-  const [cartCount] = useState(2); // dummy initial count to showcase badge
+  const [mounted, setMounted] = useState(false);
+  const { openCart, getTotalItems } = useCartStore();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const cartCount = mounted ? getTotalItems() : 0;
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,10 +39,6 @@ export function Navbar() {
     } else {
       router.push("/products");
     }
-  };
-
-  const openCartNotice = () => {
-    toast.success("Keranjang belanja dibuka (Drawer siap dihubungkan di Phase 5)");
   };
 
   return (
@@ -88,7 +93,7 @@ export function Navbar() {
             variant="ghost"
             size="icon"
             className="relative size-9"
-            onClick={openCartNotice}
+            onClick={openCart}
             aria-label="Keranjang Belanja"
           >
             <ShoppingBag className="size-5" />
@@ -166,6 +171,9 @@ export function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* Slide-over Cart Drawer */}
+      <CartDrawer />
     </header>
   );
 }

@@ -155,8 +155,14 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             product={{
               id: product.id,
               name: product.name,
+              slug: product.slug,
               price: product.price,
+              originalPrice: product.originalPrice,
               stock: product.stock,
+              imageUrl:
+                product.images.find((img) => img.isPrimary)?.imageUrl ||
+                product.images[0]?.imageUrl,
+              category: product.category?.name,
             }}
           />
 

@@ -1,22 +1,30 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Plus, Minus, ShoppingBag, Zap, CheckCircle2, ShieldCheck, Truck, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatRupiah } from "@/lib/utils";
 import { toast } from "sonner";
+import { useCartStore } from "@/store/use-cart-store";
 
 interface ProductPurchaseBoxProps {
   product: {
     id: string;
     name: string;
+    slug: string;
     price: number;
+    originalPrice?: number | null;
     stock: number;
+    imageUrl?: string;
+    category?: string;
   };
 }
 
 export function ProductPurchaseBox({ product }: ProductPurchaseBoxProps) {
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
+  const addItem = useCartStore((state) => state.addItem);
 
   const isOutOfStock = product.stock <= 0;
   const maxStock = Math.max(0, product.stock);
@@ -40,6 +48,21 @@ export function ProductPurchaseBox({ product }: ProductPurchaseBoxProps) {
       toast.error("Maaf, produk ini sedang habis.");
       return;
     }
+
+    addItem(
+      {
+        id: product.id,
+        name: product.name,
+        slug: product.slug,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        imageUrl: product.imageUrl || "",
+        maxStock: product.stock,
+        category: product.category,
+      },
+      quantity
+    );
+
     toast.success(`${quantity}x ${product.name} dimasukkan ke keranjang!`, {
       description: `Subtotal: ${formatRupiah(product.price * quantity)}`,
     });
@@ -50,9 +73,22 @@ export function ProductPurchaseBox({ product }: ProductPurchaseBoxProps) {
       toast.error("Maaf, produk ini sedang habis.");
       return;
     }
-    toast.info("Mengarahkan ke checkout...", {
-      description: "Checkout langsung akan dihubungkan secara penuh di Fase 5 & 6.",
-    });
+
+    addItem(
+      {
+        id: product.id,
+        name: product.name,
+        slug: product.slug,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        imageUrl: product.imageUrl || "",
+        maxStock: product.stock,
+        category: product.category,
+      },
+      quantity
+    );
+
+    router.push("/checkout");
   };
 
   return (
