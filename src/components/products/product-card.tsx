@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatRupiah } from "@/lib/utils";
 import { toast } from "sonner";
+import { useCartStore } from "@/store/use-cart-store";
 
 interface ProductCardProps {
   product: {
@@ -30,6 +31,8 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
+  const addItem = useCartStore((state) => state.addItem);
+
   const primaryImage =
     product.images?.find((img) => img.isPrimary)?.imageUrl ||
     product.images?.[0]?.imageUrl ||
@@ -48,6 +51,20 @@ export function ProductCard({ product }: ProductCardProps) {
       toast.error("Maaf, stok produk ini sedang habis!");
       return;
     }
+
+    addItem(
+      {
+        id: product.id,
+        name: product.name,
+        slug: product.slug,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        imageUrl: primaryImage,
+        maxStock: product.stock,
+        category: product.category?.name,
+      },
+      1
+    );
 
     toast.success(`${product.name} berhasil ditambahkan!`, {
       description: "Item tersimpan di keranjang belanja Anda.",
