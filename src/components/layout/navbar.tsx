@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Search, ShoppingBag, Menu, User, Sparkles } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "cn";
@@ -18,13 +19,16 @@ import { toast } from "sonner";
 import { UserNav } from "@/components/layout/user-nav";
 
 export function Navbar() {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [cartCount] = useState(2); // dummy initial count to showcase badge
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      toast.info(`Mencari produk: "${searchQuery}"`);
+      router.push(`/products?q=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      router.push("/products");
     }
   };
 
@@ -54,10 +58,10 @@ export function Navbar() {
           <Link href="/" className="text-foreground transition hover:text-foreground/80">
             Beranda
           </Link>
-          <Link href="#featured" className="transition hover:text-foreground">
+          <Link href="/products" className="transition hover:text-foreground">
             Katalog
           </Link>
-          <Link href="#categories" className="transition hover:text-foreground">
+          <Link href="/#categories" className="transition hover:text-foreground">
             Kategori
           </Link>
           <Link href="#about" className="transition hover:text-foreground">
@@ -134,10 +138,10 @@ export function Navbar() {
                     <Link href="/" className="px-3 py-2 rounded-md hover:bg-muted transition">
                       Beranda
                     </Link>
-                    <Link href="#featured" className="px-3 py-2 rounded-md hover:bg-muted transition">
+                    <Link href="/products" className="px-3 py-2 rounded-md hover:bg-muted transition">
                       Katalog Produk
                     </Link>
-                    <Link href="#categories" className="px-3 py-2 rounded-md hover:bg-muted transition">
+                    <Link href="/#categories" className="px-3 py-2 rounded-md hover:bg-muted transition">
                       Kategori
                     </Link>
                     <Link href="#about" className="px-3 py-2 rounded-md hover:bg-muted transition">
