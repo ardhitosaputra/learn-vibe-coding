@@ -68,7 +68,7 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-2 pt-2">
               <Badge variant="outline" className="text-xs font-mono font-medium">
-                Phase 1: Foundation
+                Phase 4: Live Catalog
               </Badge>
               <Badge variant="secondary" className="text-xs">
                 Midtrans Ready
@@ -81,23 +81,28 @@ export function Footer() {
             <h4 className="text-sm font-semibold uppercase tracking-wider text-foreground">Katalog</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <Link href="#featured" className="hover:text-foreground transition">
-                  Produk Unggulan
+                <Link href="/products" className="hover:text-foreground transition">
+                  Semua Produk
                 </Link>
               </li>
               <li>
-                <Link href="#categories" className="hover:text-foreground transition">
-                  Koleksi Terbaru
+                <Link href="/products?category=apparel" className="hover:text-foreground transition">
+                  Apparel
                 </Link>
               </li>
               <li>
-                <Link href="#promo" className="hover:text-foreground transition">
-                  Promo Spesial
+                <Link href="/products?category=accessories" className="hover:text-foreground transition">
+                  Aksesoris
                 </Link>
               </li>
               <li>
-                <Link href="#best-seller" className="hover:text-foreground transition">
-                  Paling Laris
+                <Link href="/products?category=electronics" className="hover:text-foreground transition">
+                  Elektronik
+                </Link>
+              </li>
+              <li>
+                <Link href="/products?category=living" className="hover:text-foreground transition">
+                  Living & Home
                 </Link>
               </li>
             </ul>
